@@ -11,8 +11,16 @@ RSpec.describe "The Idea Controller", type: :request do
     it "get all ideas" do
       get "/api/v1/ideas.json"
 
-      expect(json.count).to eq 3
+      expect(json.count).to      eq 3
       expect(response.status).to eq 200
+    end
+
+    it "creates a new idea" do
+      post "/api/v1/ideas.json", {title: "hello I'm a title", body: "hello I'm a body"}
+
+      expect(json.count).to      eq 4
+      expect(Idea.all.count).to  eq 4
+      expect(Idea.last.title).to eq "hello I'm a title"
     end
   end
 end
