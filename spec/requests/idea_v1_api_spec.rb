@@ -18,9 +18,24 @@ RSpec.describe "The Idea Controller", type: :request do
     it "creates a new idea" do
       post "/api/v1/ideas.json", {title: "hello I'm a title", body: "hello I'm a body"}
 
+      expect(response.status).to eq 201
       expect(json.count).to      eq 4
       expect(Idea.all.count).to  eq 4
       expect(Idea.last.title).to eq "hello I'm a title"
+    end
+
+    it "deletes an idea" do
+      post "/api/v1/ideas.json", {title: "hello I'm a title", body: "hello I'm a body"}
+
+      expect(response.status).to eq 201
+      expect(Idea.all.count).to eq 4
+      expect(Idea.last.body).to eq "hello I'm a body"
+
+      delete "/api/v1/ideas/#{Idea.last.id}.json"
+
+      expect(response.status).to eq 204
+      expect(Idea.all.count).to  eq 3
+      expect(Idea.last.title).to eq "Idea 3"
     end
   end
 end
