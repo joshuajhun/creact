@@ -1,7 +1,5 @@
 ## Idea Box 2.0
-### The JavaScript Version
-
----
+#### The JavaScript Version
 
 [Project Spec](https://github.com/turingschool/curriculum/blob/master/source/projects/revenge_of_idea_box.markdown) | [Production Link](https://ideas-js.herokuapp.com/)
 
