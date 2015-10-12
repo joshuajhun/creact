@@ -31,6 +31,22 @@ RSpec.describe "The Idea Controller", type: :request do
       expect(Idea.last.title).to eq "hello I'm an updated title"
     end
 
+    it "updates the status of an idea" do
+      expect(Idea.last.quality).to eq "Genius"
+
+      put "/api/v1/ideas/#{Idea.last.id}.json", {quality: "Plausible"}
+
+      expect(response.status).to eq 204
+      expect(Idea.last.quality).to eq "Plausible"
+
+      expect(Idea.first.quality).to eq "Swill"
+
+      put "/api/v1/ideas/#{Idea.last.id}.json", {quality: "Genius"}
+
+      expect(response.status).to eq 204
+      expect(Idea.last.quality).to eq "Genius"
+    end
+
     it "deletes an idea" do
       post "/api/v1/ideas.json", {title: "hello I'm a title", body: "hello I'm a body"}
 
@@ -44,6 +60,5 @@ RSpec.describe "The Idea Controller", type: :request do
       expect(Idea.all.count).to  eq 3
       expect(Idea.last.title).to eq "Idea 3"
     end
-
   end
 end
