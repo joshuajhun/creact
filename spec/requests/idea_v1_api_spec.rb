@@ -24,6 +24,13 @@ RSpec.describe "The Idea Controller", type: :request do
       expect(Idea.last.title).to eq "hello I'm a title"
     end
 
+    it "edits an idea" do
+      put "/api/v1/ideas/#{Idea.last.id}.json", {title: "hello I'm an updated title", body: "hello I'm an updated body"}
+
+      expect(response.status).to eq 204
+      expect(Idea.last.title).to eq "hello I'm an updated title"
+    end
+
     it "deletes an idea" do
       post "/api/v1/ideas.json", {title: "hello I'm a title", body: "hello I'm a body"}
 
@@ -37,5 +44,6 @@ RSpec.describe "The Idea Controller", type: :request do
       expect(Idea.all.count).to  eq 3
       expect(Idea.last.title).to eq "Idea 3"
     end
+
   end
 end
