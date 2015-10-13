@@ -25,20 +25,24 @@ function loadAllIdeas() {
 }
 
 function appendIdeaToDom(idea) {
-  $('.ideas').prepend(
-    '<div class="idea" data-id="'
+  var newIdea = $('<div class="idea" data-id="'
     + idea.id
     + '"><h2>' + idea.title + '</h2>'
     + '<p>' + truncateBody(idea.body) + '</p>'
-    + '<p><b>Quality:</b> ' + idea.quality
-    + '<div class="quality-change"><label id="quality-change-options"><input type="radio" name="optradio">  Swill</label>'
-    + '<label id="quality-change-options"><input type="radio" name="optradio">  Plausible</label>'
-    + '<label id="quality-change-options"><input type="radio" name="optradio">  Genius</label>'
+    + '<p><b>Quality:</b> <p id="quality">' + idea.quality + '</p>'
+    + '<div class="quality-change"><label id="quality-options"><input type="radio" name="radio-button' + idea.id
+    + '" value="Swill">  Swill</label>'
+    + '<label id="quality-options"><input type="radio" name="radio-button' + idea.id
+    + '" value="Plausible">  Plausible</label>'
+    + '<label id="quality-options"><input type="radio" name="radio-button' + idea.id
+    + '" value="Genius">  Genius</label>'
     + '</div></p>'
     + '<a id="full-body" class="btn btn-sm btn-default">Full</a>'
     + '<a id="remove-idea" class="btn btn-sm btn-default">Remove</a>'
-    + '</div>'
-  )
+    + '</div>');
+
+  addListenerForQualityChange(newIdea);
+  $('.ideas').prepend(newIdea);
 }
 
 function truncateBody(body) {
@@ -47,6 +51,23 @@ function truncateBody(body) {
   });
 
   return body.slice(0, 100) + '...';
+}
+
+function addListenerForQualityChange(idea) {
+  idea.find('.quality-change input').on('click', function() {
+    var quality = $(this).val();
+
+    $.ajax({
+      url: '/api/v1/ideas/' + $(idea).data('id') + '.json',
+      type: 'PUT',
+      data: {idea: { quality: quality } },
+      success: function() {
+        idea.find('#quality').html(quality);
+      }
+    });
+  });
+
+  return idea;
 }
 
 function submitNewIdea() {
@@ -64,7 +85,7 @@ function submitNewIdea() {
       type: 'POST',
       data: formData,
       success: function(idea) {
-        appendNewIdea(idea);
+        appendIdeaToDom(idea);
 
         $('#idea-title').val('');
         $('#idea-body').val('');
@@ -73,22 +94,6 @@ function submitNewIdea() {
   })
 }
 
-function appendNewIdea(idea) {
-  $('.ideas').prepend(
-    '<div class="idea" data-id="'
-    + idea.id
-    + '"><h2>' + idea.title + '</h2>'
-    + '<p>' + truncateBody(idea.body) + '</p>'
-    + '<p><b>Quality:</b> ' + idea.quality
-    + '<div class="quality-change"><label id="quality-change-options"><input type="radio" name="optradio">  Swill</label>'
-    + '<label id="quality-change-options"><input type="radio" name="optradio">  Plausible</label>'
-    + '<label id="quality-change-options"><input type="radio" name="optradio">  Genius</label>'
-    + '</div></p>'
-    + '<a id="full-body" class="btn btn-sm btn-default">Full</a>'
-    + '<a id="remove-idea" class="btn btn-sm btn-default">Remove</a>'
-    + '</div>'
-  )
-}
 
 function deleteIdea() {
   $('.ideas').delegate('#remove-idea', 'click', function() {
