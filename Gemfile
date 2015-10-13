@@ -17,6 +17,7 @@ group :development, :test do
   gem 'byebug'
   gem 'rspec-rails'
   gem 'pry-rails'
+  gem 'teaspoon-mocha'
   gem 'capybara'
   gem 'database_cleaner'
 end
