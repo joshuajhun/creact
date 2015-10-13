@@ -7,7 +7,7 @@ $(document).ready(function() {
 function renderHeader() {
   return $('.links').append(
     '<img class="js-logo" src="https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png" />'
-    + '<a id="link" href="#">All Ideas</a>'
+    + '<a href="#" class="not-a-link">Ideas</a><a id="link" href="#">All Ideas</a>'
   )
 }
 
