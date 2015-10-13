@@ -29,7 +29,7 @@ function appendIdeaToDom(idea) {
     + idea.id
     + '"><h2>' + idea.title + '</h2>'
     + '<p>' + truncateBody(idea.body) + '</p>'
-    + '<p><b>Quality:</b> <p id="quality">' + idea.quality + '</p>'
+    + '<p id="quality"><b>Quality:</b> ' + idea.quality + '</p>'
     + '<div class="quality-change"><label id="quality-options"><input type="radio" name="radio-button' + idea.id
     + '" value="Swill">  Swill</label>'
     + '<label id="quality-options"><input type="radio" name="radio-button' + idea.id
@@ -39,6 +39,7 @@ function appendIdeaToDom(idea) {
     + '</div></p>'
     + '<a id="full-body" class="btn btn-sm btn-default">Full</a>'
     + '<a id="remove-idea" class="btn btn-sm btn-default">Remove</a>'
+    + '<a id="edit-idea" class="btn btn-sm btn-default">Edit</a>'
     + '</div>');
 
   addListenerForQualityChange(newIdea);
@@ -62,7 +63,7 @@ function addListenerForQualityChange(idea) {
       type: 'PUT',
       data: {idea: { quality: quality } },
       success: function() {
-        idea.find('#quality').html(quality);
+        idea.find('#quality').html('<b>Quality:</b> ' + quality);
       }
     });
   });
