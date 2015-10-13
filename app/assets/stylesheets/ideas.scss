@@ -1,19 +1,23 @@
 .navbar-inverse {
   border: none;
-  background-color: #FFBF00;
-  height: 20%;
+  background-color: #F0DB4F;
+  height: 15%;
   padding-top: 1%;
 }
 
 .navbar-inverse a {
+  margin-right: 2%;
+  margin-top: 1%;
+
   font-size: 200%;
   color: black;
 }
 
-.navbar-inverse ul {
-  float: right;
+img.js-logo {
+  width: 5%;
+  margin-top: -3%;
 }
 
-.navbar-inverse .navbar-nav > li > a {
-  color: black;
+.links {
+  margin-top: 1%;
 }
