@@ -2,6 +2,7 @@ $(document).ready(function() {
   renderHeaderLinks();
   loadAllIdeas();
   submitNewIdea();
+  deleteIdea();
 });
 
 function renderHeaderLinks() {
@@ -24,11 +25,14 @@ function loadAllIdeas() {
 }
 
 function appendIdeaToDom(idea) {
-  $('.all-ideas').prepend(
-    '<div class="idea">'
-    + '<h2>' + idea.title + '</h2>'
-    + '<p>' + truncateBody(idea.body) + '<a id="full-body" class="btn btn-sm btn-default">Full</a></p>'
+  $('.ideas').prepend(
+    '<div class="idea" data-id="'
+    + idea.id
+    + '"><h2>' + idea.title + '</h2>'
+    + '<p>' + truncateBody(idea.body) + '</p>'
     + '<p><b>Quality:</b> ' + idea.quality + '</p>'
+    + '<a id="full-body" class="btn btn-sm btn-default">Full</a>'
+    + '<a id="remove-idea" class="btn btn-sm btn-default">Remove</a>'
     + '</div>'
   )
 }
@@ -66,11 +70,28 @@ function submitNewIdea() {
 }
 
 function appendNewIdea(idea) {
-  $('.all-ideas').prepend(
-    '<div class="idea">'
-    + '<h2>' + idea.title + '</h2>'
-    + '<p>' + truncateBody(idea.body) + '<a id="full-body" class="btn btn-sm btn-default">Full</a></p>'
+  $('.ideas').prepend(
+    '<div class="idea" data-id="'
+    + idea.id
+    + '"><h2>' + idea.title + '</h2>'
+    + '<p>' + truncateBody(idea.body) + '</p>'
     + '<p><b>Quality:</b> ' + idea.quality + '</p>'
+    + '<a id="full-body" class="btn btn-sm btn-default">Full</a>'
+    + '<a id="remove-idea" class="btn btn-sm btn-default">Remove</a>'
     + '</div>'
   )
+}
+
+function deleteIdea() {
+  $('.ideas').delegate('#remove-idea', 'click', function() {
+    var $idea = $(this).closest('.idea');
+
+    $.ajax({
+      url: '/api/v1/ideas/' + $idea.attr('data-id') + '.json',
+      type: 'DELETE',
+      success: function() {
+        $idea.remove();
+      }
+    });
+  });
 }
