@@ -1,0 +1,19 @@
+.navbar-inverse {
+  border: none;
+  background-color: #FFBF00;
+  height: 20%;
+  padding-top: 1%;
+}
+
+.navbar-inverse a {
+  font-size: 200%;
+  color: black;
+}
+
+.navbar-inverse ul {
+  float: right;
+}
+
+.navbar-inverse .navbar-nav > li > a {
+  color: black;
+}
