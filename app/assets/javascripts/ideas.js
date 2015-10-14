@@ -57,8 +57,6 @@ function appendIdeaToDom(idea) {
                     '</div>' +
                   '</div>');
 
-  addListenerForEdit(newIdea);
-  addListenerToSubmitEdits(newIdea);
   $('.ideas').prepend(newIdea);
 }
 
@@ -71,8 +69,41 @@ function bindEvents() {
     var filter = $(this).html();
     filter === 'All' ? loadIdeas() : renderFilteredIdeas(filter);
   });
-  // TODO: extract addListenerForEdit and
-  //               addListenerToSubmitEdits
+
+  $('.idea').each(function(index, el) {
+    onClickEdit($(el));
+    onClickSubmit($(el));
+  });
+}
+
+function onClickEdit(idea) {
+  idea.find('.edit-idea-' + idea.data('id')).on('click', function() {
+    idea.find('#edit-form-' + idea.data('id')).toggle('fast');
+  });
+}
+
+function onClickSubmit(idea) {
+  idea.find('#submit-idea-' + idea.data('id')).on('click', function() {
+    event.preventDefault();
+
+    var $idea = $(this).closest('.idea');
+    var newTitle = $('#idea-title-' + $idea.attr('data-id')).val()
+    var newBody = $('#idea-body-' + $idea.attr('data-id')).val()
+
+    var formData = {
+      idea: {
+        title: newTitle,
+        body: newBody
+      }
+    }
+
+    ideaService.edit($idea.attr('data-id'), formData, function() {
+      $('#title-' + $idea.attr('data-id')).html(newTitle);
+      $('#body-' + $idea.attr('data-id')).html(newBody);
+
+      $('.edit-idea-' + $idea.attr('data-id')).click();
+    });
+  });
 }
 
 function renderFilteredIdeas(filter) {
@@ -113,58 +144,28 @@ function onQualityChange(idea) {
   return idea;
 }
 
-function addListenerForEdit(idea) {
-  idea.find('.edit-idea-' + idea.data('id')).on('click', function() {
-    idea.find('#edit-form-' + idea.data('id')).toggle('fast');
-  });
-}
-
-function addListenerToSubmitEdits(idea) {
-  idea.find('#submit-idea-' + idea.data('id')).on('click', function() {
-    event.preventDefault();
-
-    var $idea = $(this).closest('.idea');
-    var newTitle = $('#idea-title-' + $idea.attr('data-id')).val()
-    var newBody = $('#idea-body-' + $idea.attr('data-id')).val()
-
-    var formData = {
-      idea: {
-        title: newTitle,
-        body: newBody
-      }
-    }
-
-    ideaService.edit($idea.attr('data-id'), formData, function() {
-      $('#title-' + $idea.attr('data-id')).html(newTitle);
-      $('#body-' + $idea.attr('data-id')).html(newBody);
-
-      $('.edit-idea-' + $idea.attr('data-id')).click();
-    });
-  });
-}
-
 function submitNewIdea() {
   $('#submit-idea').on('click', function() {
     event.preventDefault();
 
-    var formData = {
-      idea: {
-        title: $('#idea-title').val(),
-        body: $('#idea-body').val()
-      }
-    }
-
-    ideaService.new(formData, function(err, idea) {
+    ideaService.new(formData(), function(err, idea) {
       appendIdeaToDom(idea);
       resetForm();
     });
   })
 }
 
+function formData() {
+  return {idea: {
+      title: $('#idea-title').val(),
+      body: $('#idea-body').val()
+    }
+  }
+}
+
 function resetForm() {
   $('#idea-title').val('');
   $('#idea-body').val('');
-
 }
 
 function deleteIdea() {
