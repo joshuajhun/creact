@@ -156,11 +156,15 @@ function submitNewIdea() {
 
     ideaService.new(formData, function(err, idea) {
       appendIdeaToDom(idea);
-
-      $('#idea-title').val('');
-      $('#idea-body').val('');
+      resetForm();
     });
   })
+}
+
+function resetForm() {
+  $('#idea-title').val('');
+  $('#idea-body').val('');
+
 }
 
 function deleteIdea() {
