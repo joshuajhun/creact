@@ -42,7 +42,6 @@ function appendIdeaToDom(idea) {
                       '<label class="quality-options"><input type="radio" name="radio-button' + idea.id + '" value="Plausible">  Plausible</label>' +
                       '<label class="quality-options"><input type="radio" name="radio-button' + idea.id + '" value="Genius">  Genius</label>' +
                     '</div></p>' +
-                    '<a class="full-body btn btn-sm btn-default">Full</a>' +
                     '<a class="remove-idea btn btn-sm btn-default">Remove</a>' +
                     '<a class="edit-idea-' + idea.id + ' btn btn-sm btn-default">Edit</a>' +
                     '<div class="row" style="display: none;" id="edit-form-' + idea.id + '">' +
@@ -85,13 +84,8 @@ function renderFilteredIdeas(filter) {
   });
 }
 
-
 function truncateBody(body) {
-  $('#full-body').on('click', function() {
-    console.log("display full body on click", body);
-  });
-
-  return body.slice(0, 100) + '...';
+  return body.length > 100 ? body.slice(0, 100) + '...' : body;
 }
 
 function searchIdeas() {
