@@ -1,10 +1,13 @@
 $(document).ready(function() {
   renderHeaderLinks();
+
   loadAllIdeas(function(ideas) {
     renderIdeas(ideas);
     bindEvents();
   });
+
   submitNewIdea();
+  searchIdeas();
   deleteIdea();
 });
 
@@ -67,12 +70,27 @@ function bindEvents() {
   //               addListenerToSubmitEdits
 }
 
+
 function truncateBody(body) {
   $('#full-body').on('click', function() {
     console.log("display full body on click", body);
   });
 
   return body.slice(0, 100) + '...';
+}
+
+function searchIdeas() {
+  $('#search').keyup(function() {
+    var input = $('#search').val().toLowerCase();
+
+    $('.idea').each(function (index, idea) {
+      var title = $(idea).find('h2').text().toLowerCase();
+      var body = $(idea).find('p').text().toLowerCase();
+
+      var isMatching = (title + body).indexOf(input) !== -1;
+      $(idea).toggle(isMatching);
+    });
+  });
 }
 
 function onQualityChange(idea) {
