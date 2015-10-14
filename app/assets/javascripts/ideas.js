@@ -1,21 +1,16 @@
 $(document).ready(function() {
   renderHeaderLinks();
-
-  loadAllIdeas(function(ideas) {
-    renderIdeas(ideas);
-    bindEvents();
-  });
-
+  loadIdeas();
   submitNewIdea();
   searchIdeas();
   deleteIdea();
 });
 
-function renderHeaderLinks() {
-  return $('.links').append(
-    '<img class="js-logo" src="https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png" />'
-    + '<a href="#" class="not-a-link">Ideas</a>'
-  )
+function loadIdeas() {
+  loadAllIdeas(function(ideas) {
+    renderIdeas(ideas);
+    bindEvents();
+  });
 }
 
 function loadAllIdeas(callback) {
@@ -28,6 +23,13 @@ function renderIdeas(ideas) {
   ideas.map(function(idea) {
     appendIdeaToDom(idea);
   });
+}
+
+function renderHeaderLinks() {
+  return $('.links').append(
+    '<img class="js-logo" src="https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png" />'
+    + '<a href="#" class="not-a-link">Ideas</a>'
+  )
 }
 
 function appendIdeaToDom(idea) {
@@ -66,8 +68,21 @@ function bindEvents() {
     onQualityChange.call(this, $(this).closest('.idea'));
   })
 
+  $('.quality-buttons').on('click', 'a', function() {
+    var filter = $(this).html();
+    filter === 'All' ? loadIdeas() : renderFilteredIdeas(filter);
+  });
   // TODO: extract addListenerForEdit and
   //               addListenerToSubmitEdits
+}
+
+function renderFilteredIdeas(filter) {
+  $('.idea').each(function() {
+    var quality = $(this).find('.quality').html();
+
+    var isMatching = quality.indexOf(filter) !== -1;
+    $(this).toggle(isMatching);
+  });
 }
 
 
