@@ -25,24 +25,33 @@ function loadAllIdeas() {
 }
 
 function appendIdeaToDom(idea) {
-  var newIdea = $('<div class="idea" data-id="'
-    + idea.id
-    + '"><h2>' + idea.title + '</h2>'
-    + '<p>' + truncateBody(idea.body) + '</p>'
-    + '<p id="quality"><b>Quality:</b> ' + idea.quality + '</p>'
-    + '<div class="quality-change"><label id="quality-options"><input type="radio" name="radio-button' + idea.id
-    + '" value="Swill">  Swill</label>'
-    + '<label id="quality-options"><input type="radio" name="radio-button' + idea.id
-    + '" value="Plausible">  Plausible</label>'
-    + '<label id="quality-options"><input type="radio" name="radio-button' + idea.id
-    + '" value="Genius">  Genius</label>'
-    + '</div></p>'
-    + '<a id="full-body" class="btn btn-sm btn-default">Full</a>'
-    + '<a id="remove-idea" class="btn btn-sm btn-default">Remove</a>'
-    + '<a id="edit-idea" class="btn btn-sm btn-default">Edit</a>'
-    + '</div>');
+  var newIdea = $('<div class="idea" data-id="' + idea.id + '">' +
+                    '<h2>' + idea.title + '</h2>' +
+                    '<p>' + truncateBody(idea.body) + '</p>' +
+                    '<p id="quality"><b>Quality:</b> ' + idea.quality + '</p>' +
+                    '<div class="quality-change">' +
+                      '<label id="quality-options"><input type="radio" name="radio-button' + idea.id + '" value="Swill">  Swill</label>' +
+                      '<label id="quality-options"><input type="radio" name="radio-button' + idea.id + '" value="Plausible">  Plausible</label>' +
+                      '<label id="quality-options"><input type="radio" name="radio-button' + idea.id + '" value="Genius">  Genius</label>' +
+                    '</div></p>' +
+                    '<a id="full-body" class="btn btn-sm btn-default">Full</a>' +
+                    '<a id="remove-idea" class="btn btn-sm btn-default">Remove</a>' +
+                    '<a id="edit-idea-' + idea.id + '" class="btn btn-sm btn-default">Edit</a>' +
+                    '<div class="row hidden" id="edit-form-' + idea.id + '">' +
+                      '<div class="col-md-6">' +
+                        '<div class="idea-form form-group">' +
+                          '<label>Title</label>' +
+                            '<input class="form-control" type="text" id="idea-title" value="' + idea.title + '">' +
+                          '<label>Content</label>' +
+                          '<input class="form-control" type="textfield" id="idea-body" value="' + idea.body + '">' +
+                        '</div>' +
+                        '<input class="btn btn-default pull-right" id="submit-idea" type="button" name="submit" value="Create Idea">' +
+                      '</div>' +
+                    '</div>' +
+                  '</div>');
 
   addListenerForQualityChange(newIdea);
+  addListenerForEdit(newIdea);
   $('.ideas').prepend(newIdea);
 }
 
@@ -69,6 +78,12 @@ function addListenerForQualityChange(idea) {
   });
 
   return idea;
+}
+
+function addListenerForEdit(idea) {
+  idea.find('#edit-idea-' + idea.data('id')).on('click', function() {
+    idea.find('#edit-form-' + idea.data('id')).toggleClass('hidden')
+  });
 }
 
 function submitNewIdea() {
