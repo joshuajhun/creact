@@ -3,7 +3,6 @@ $(document).ready(function() {
   loadIdeas();
   submitNewIdea();
   searchIdeas();
-  deleteIdea();
 });
 
 function loadIdeas() {
@@ -57,7 +56,10 @@ function appendIdeaToDom(idea) {
                     '</div>' +
                   '</div>');
 
+  onClickEditIdea(newIdea);
+  onClickSubmitIdea(newIdea);
   $('.ideas').prepend(newIdea);
+
 }
 
 function bindEvents() {
@@ -70,19 +72,23 @@ function bindEvents() {
     filter === 'All' ? loadIdeas() : renderFilteredIdeas(filter);
   });
 
-  $('.idea').each(function(index, el) {
-    onClickEdit($(el));
-    onClickSubmit($(el));
+  $('.ideas').delegate('.remove-idea', 'click', function() {
+    var idea = $(this).closest('.idea');
+    var id   = idea.attr('data-id')
+
+    ideaService.delete(id, function() {
+      idea.remove();
+    });
   });
 }
 
-function onClickEdit(idea) {
+function onClickEditIdea(idea) {
   idea.find('.edit-idea-' + idea.data('id')).on('click', function() {
     idea.find('#edit-form-' + idea.data('id')).toggle('fast');
   });
 }
 
-function onClickSubmit(idea) {
+function onClickSubmitIdea(idea) {
   idea.find('#submit-idea-' + idea.data('id')).on('click', function() {
     event.preventDefault();
 
@@ -168,17 +174,6 @@ function resetForm() {
   $('#idea-body').val('');
 }
 
-function deleteIdea() {
-  $('.ideas').delegate('.remove-idea', 'click', function() {
-    var idea = $(this).closest('.idea');
-    var id   = idea.attr('data-id')
-
-    ideaService.delete(id, function() {
-      idea.remove();
-    });
-  });
-}
-
 var ideaService = {
   index: function(cb) {
     $.ajax({
@@ -207,7 +202,7 @@ var ideaService = {
       type: 'PUT',
       data: data,
       success: function() {
-        cb()
+        cb();
       }
     });
   },
