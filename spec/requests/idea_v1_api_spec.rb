@@ -25,7 +25,7 @@ RSpec.describe "The Idea Controller", type: :request do
     end
 
     it "edits an idea" do
-      put "/api/v1/ideas/#{Idea.last.id}.json", {title: "hello I'm an updated title", body: "hello I'm an updated body"}
+      put "/api/v1/ideas/#{Idea.last.id}.json", {idea: {title: "hello I'm an updated title", body: "hello I'm an updated body"}}
 
       expect(response.status).to eq 204
       expect(Idea.last.title).to eq "hello I'm an updated title"
@@ -34,21 +34,21 @@ RSpec.describe "The Idea Controller", type: :request do
     it "updates the status of an idea" do
       expect(Idea.last.quality).to eq "Genius"
 
-      put "/api/v1/ideas/#{Idea.last.id}.json", {quality: "Plausible"}
+      put "/api/v1/ideas/#{Idea.last.id}.json", {idea: {quality: "Plausible"}}
 
       expect(response.status).to eq 204
       expect(Idea.last.quality).to eq "Plausible"
 
       expect(Idea.first.quality).to eq "Swill"
 
-      put "/api/v1/ideas/#{Idea.last.id}.json", {quality: "Genius"}
+      put "/api/v1/ideas/#{Idea.last.id}.json", {idea: {quality: "Genius"}}
 
       expect(response.status).to eq 204
       expect(Idea.last.quality).to eq "Genius"
     end
 
     it "deletes an idea" do
-      post "/api/v1/ideas.json", {title: "hello I'm a title", body: "hello I'm a body"}
+      post "/api/v1/ideas.json", {idea: {title: "hello I'm a title", body: "hello I'm a body"}}
 
       expect(response.status).to eq 201
       expect(Idea.all.count).to eq 4

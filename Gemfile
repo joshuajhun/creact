@@ -14,10 +14,10 @@ gem 'populator'
 gem 'faker'
 
 group :development, :test do
-  gem 'byebug'
+  gem 'selenium-webdriver'
   gem 'rspec-rails'
+  gem 'launchy'
   gem 'pry-rails'
-  gem 'teaspoon-mocha'
   gem 'capybara'
   gem 'database_cleaner'
 end
