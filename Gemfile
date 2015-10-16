@@ -12,6 +12,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'responders'
 gem 'populator'
 gem 'faker'
+gem 'react-rails'
 
 group :development, :test do
   gem 'selenium-webdriver'
