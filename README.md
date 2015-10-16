@@ -1,10 +1,5 @@
-## Idea Box 2.0
-#### The JavaScript Version
+## Idea Box 2.1 
+#### React.js (in Rails)
 
-[Project Spec](https://github.com/turingschool/curriculum/blob/master/source/projects/revenge_of_idea_box.markdown) | [Production Link](https://ideas-js.herokuapp.com/)
-
-![](http://g.recordit.co/Dkm74yaAfi.gif)
-
-Every developer has more ideas than time. As David Allen likes to say "the human brain is for creating ideas, not remembering them."
-This is an exercise in building and manipulating the DOM using solely JavaScript and jQuery.
+A skeleton app to get started with React.js. This app uses a Rails API and has an almost untouched front end - so you can fill it with React components!!
 
