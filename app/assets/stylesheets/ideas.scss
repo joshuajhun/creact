@@ -1,39 +1,4 @@
-/* Header */
-
-.navbar-inverse {
-  border: none;
-  background-color: #F0DB4F;
-  height: 15%;
-  padding-top: 1%;
-}
-
-.navbar-inverse a {
-  margin-right: 2%;
-  margin-top: 1%;
-
-  font-size: 200%;
-  color: black;
-}
-
-img.js-logo {
-  width: 5%;
-  margin-top: -3%;
-}
-
-.links {
-  margin-top: 1%;
-}
-
-.not-a-link:hover {
-  text-decoration: none;
-}
-
-/* Section */
-
-.section {
-  margin-top: 12%;
-}
-
-.quality-options {
-  margin-right: 2%;
+.dashboard {
+  min-height: 100px;
+  background-color: magenta;
 }
