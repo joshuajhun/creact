@@ -1,10 +1,20 @@
 var Dashboard = React.createClass({
   getInitialState: function() {
-    return {value: 'what\'s up?'}
+    return {value: 'Come join us', rawIdeas: []}
   },
   onButtonBoxClick: function() {
     this.setState({value: "You clicked a button, and here I am all of a sudden."});
   },
+  componentDidMount: function() {
+    $.ajax({
+      url: '/api/v1/ideas.json',
+      type: 'GET',
+      success: function(response) {
+        this.setState({rawIdeas: response});
+      }.bind(this)
+    });
+  },
+
   render: function() {
     return (
       <div className='dashboard'>
@@ -12,6 +22,8 @@ var Dashboard = React.createClass({
 
         <ButtonBox onButtonClick={this.onButtonBoxClick} />
         <ContentBox text={this.state.value} />
+
+        <IdeaBox ideas={this.state.rawIdeas} />
       </div>
     )
   }
@@ -41,3 +53,24 @@ var ContentBox = React.createClass({
     )
   }
 });
+
+var IdeaBox = React.createClass({
+  render: function() {
+    var ideaElements = this.props.ideas.map(function(idea, index) {
+      return (
+        <div className='idea' key={index} >
+          <h1>{idea.title}</h1>
+          <h3>{idea.body}</h3>
+          <p>Quality: {idea.quality}</p>
+        </div>
+      )
+    });
+
+    return (
+      <div>
+        {ideaElements}
+      </div>
+    )
+  }
+});
+
