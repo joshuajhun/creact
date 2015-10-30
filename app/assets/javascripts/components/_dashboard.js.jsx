@@ -108,6 +108,9 @@ var ContentBox = React.createClass({
 });
 
 var IdeaBox = React.createClass({
+  handleDeleteClick: function(event) {
+    this.props.onDeleteIdea(event.target.value);
+  },
   render: function() {
     var ideaElements = this.props.ideas.map(function(idea, index) {
       return (
@@ -115,9 +118,17 @@ var IdeaBox = React.createClass({
           <h1>{idea.title}</h1>
           <h3>{idea.body}</h3>
           <p>Quality: {idea.quality}</p>
+
+          <button className='btn btn-primary'
+                  onClick={this.handleDeleteClick}
+                  value={idea.id}
+          >
+            Delete!
+          </button>
+
         </div>
       )
-    });
+    }.bind(this));
 
     return (
       <div>
