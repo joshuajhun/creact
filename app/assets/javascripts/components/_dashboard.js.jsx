@@ -14,6 +14,34 @@ var Dashboard = React.createClass({
       }.bind(this)
     });
   },
+  handleDeleteIdea: function(id) {
+    var ideasToKeep = this.state.rawIdeas.filter(function(idea) {
+      return idea.id != id;
+    });
+
+    $.ajax({
+      url: '/api/v1/ideas/' + id,
+      type: 'DELETE',
+      success: function() {
+        this.setState({rawIdeas: ideasToKeep})
+      }.bind(this)
+    });
+  },
+  handleSubmitIdea: function(title, description) {
+    $.ajax({
+      url: '/api/v1/ideas',
+      type: 'POST',
+      data: {idea: {title: title, body: description}},
+      success: function(response) {
+        this.renderAllIdeas(response);
+      }.bind(this)
+    });
+  },
+  renderAllIdeas: function(newIdea) {
+    var newIdeas = this.state.rawIdeas.concat(newIdea);
+
+    this.setState({rawIdeas: newIdeas});
+  },
 
   render: function() {
     return (
