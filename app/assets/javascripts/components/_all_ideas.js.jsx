@@ -1,22 +1,26 @@
-var AllIdeas  = React.createClass({
-  render: function(){
-  var ideas = this.props.ideas.map(function(idea){
+var AllIdeas = React.createClass({
+  handleClick: function(id) {
+    this.props.handleDeleteIdea(id);
+  },
+
+  render: function() {
+    var ideas = this.props.ideas.map(function(idea) {
+      return (
+        <div key={idea.id}>
+          <h3>{idea.title}</h3>
+          <h4>Quality: {idea.quality}</h4>
+          <p>{idea.body}</p>
+          <button onClick={this.handleClick.bind(null, idea.id)}>Delete</button>
+        </div>
+      )
+    }.bind(this));
+
     return (
-    // idea.name, idea.description, idea.quality
-    <div>
-    <h3> {idea.title}</h3>
-    <h4> Quality: {idea.quality} </h4>
-    <p>{idea.body}</p>
-    </div>
-    )
-  });
-  console.log('props in AllIdeas',this.props)
-    return (
-    <div>
-      <h1> All Ideas </h1>
-      {ideas}
-    </div>
+      <div>
+        <h1>All Ideas</h1>
+
+        {ideas}
+      </div>
     )
   }
-
 });

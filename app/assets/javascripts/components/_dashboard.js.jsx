@@ -1,5 +1,6 @@
+
 var Dashboard = React.createClass({
-  getInitialState: function(){
+  getInitialState: function() {
     return { ideas: [] }
   },
 
@@ -7,23 +8,37 @@ var Dashboard = React.createClass({
     $.ajax({
       url: '/api/v1/ideas.json',
       type: 'GET',
-      success: function(response){
-      console.log('SUCCESS', response);
-      }, error: function(xhr) {
-      console.log('FAIL', xhr);
-      }
+      success: function(response) {
+        this.setState({ ideas: response });
+      }.bind(this)
     });
   },
 
-  render: function(){
-    console.log("state in Dashboard", this.state);
+  onDelete: function(id) {
+    $.ajax({
+      url: '/api/v1/ideas/'+ id + '.json',
+      type: 'DELETE',
+      success: function() {
+        this.updateState(id)
+      }.bind(this)
+    });
+  },
 
-  return (
-    <div className = 'container'>
-      <h1> Hello, Turing </h1>
+  updateState: function(id) {
+    var filteredIdeas = this.state.ideas.filter(function(idea) {
+      return idea.id != id;
+    });
 
-      <AllIdeas ideas = {this.state.ideas}/>
-    </div>
+    this.setState({ ideas: filteredIdeas });
+  },
+
+  render: function() {
+    return (
+      <div className='container'>
+        <h1>Hello, Turing</h1>
+
+        <AllIdeas ideas={this.state.ideas} handleDeleteIdea={this.onDelete} />
+      </div>
     )
   }
-});
+});   
